@@ -15,11 +15,9 @@ class Log implements HookInterface
      *
      * simple example method that logs when the hook is called
      */
-    static public function call($object, $event)
+    public static function call($object, $event)
     {
-        if (self::isEnabled()) {
-            Logger::info(__CLASS__ . " called with object $object and event $event");
-        }
+        Logger::info(__CLASS__ . " called with object $object and event $event");
     }
 
     /**
@@ -27,7 +25,7 @@ class Log implements HookInterface
      *
      * @return bool
      */
-    static public function isEnabled() {
+    public static function isEnabled() {
         $ini = parse_ini_file(realpath(dirname(__FILE__)) . "/" . self::INIFILE);
 
         return (array_key_exists('enabled', $ini) && $ini['enabled'] == true);
