@@ -36,7 +36,7 @@ class Log implements HookInterface
         }
 
         // only log if it is a valid object
-        if (in_array(get_class($object), $objects)
+        if (in_array(get_class($object), $objects))
         {
             Logger::info(__CLASS__ . " called with object $object and event $event");
         }
