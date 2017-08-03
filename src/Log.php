@@ -9,6 +9,21 @@ class Log implements HookInterface
 {
     const INIFILE = "../config/log.ini";
 
+    private $objects = [];
+
+    private $config = [];
+
+    /**
+     * Log constructor.
+     */
+    public function __construct()
+    {
+        $this->config = parse_ini_file(realpath(dirname(__FILE__)) . "/" . self::INIFILE);
+        if (array_key_exists('objects', $this->config)) {
+            $this->objects = preg_split(',', $this->config['objects']);
+        }
+    }
+
     /**
      * dictated by HookInterface
      * the method called from hook-common
@@ -17,7 +32,11 @@ class Log implements HookInterface
      */
     public static function call($object, $event)
     {
-        Logger::info(__CLASS__ . " called with object $object and event $event");
+        // only log if it is a valid object
+        if (in_array(get_class($object), $this->objects))
+        {
+            Logger::info(__CLASS__ . " called with object $object and event $event");
+        }
     }
 
     /**
@@ -26,8 +45,7 @@ class Log implements HookInterface
      * @return bool
      */
     public static function isEnabled() {
-        $ini = parse_ini_file(realpath(dirname(__FILE__)) . "/" . self::INIFILE);
 
-        return (array_key_exists('enabled', $ini) && $ini['enabled'] == true);
+        return (array_key_exists('enabled', $this->config) && $this->config['enabled'] == true);
     }
 }
