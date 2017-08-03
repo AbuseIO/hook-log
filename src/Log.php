@@ -32,7 +32,7 @@ class Log implements HookInterface
         $config = parse_ini_file(realpath(dirname(__FILE__)) . "/" . self::INIFILE);
         if (array_key_exists('objects', $config))
         {
-           $objects = preg_split(',',$config['objects']);
+           $objects = explode(',', $config['objects']);
         }
 
         // only log if it is a valid object
